@@ -30,10 +30,10 @@ const CartPage = ({ data }) => {
   }, []);
   return (
     <Section className={"py-5"}>
-      <h1 className="text-2xl font-bold lg:px-12">Cart</h1>
+      <h1 className="text-2xl font-bold px-5 lg:px-12">Cart</h1>
       <div className="flex flex-col lg:flex-row">
-        {cart > 0 ? (
-          <div className="flex flex-col px-10 w-[60%] gap-2">
+        {(cart?.length > 0 && (
+          <div className="flex flex-col px-10 lg:w-[60%] gap-2">
             {cart.map((item) => {
               const datas = data?.find((data) => data.id === item.id);
               return (
@@ -63,8 +63,8 @@ const CartPage = ({ data }) => {
               );
             })}
           </div>
-        ) : (
-          <div className="flex flex-col px-10 w-[60%] gap-2">
+        )) || (
+          <div className="flex flex-col px-10 py-5 lg:w-[60%] gap-2">
             <div className="flex flex-col font-bold text-slate-800 p-4 border rounded-lg">
               <span className="mb-1 text-xl">Keranjang anda kosong</span>
             </div>

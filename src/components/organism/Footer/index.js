@@ -1,12 +1,16 @@
 import Button from "@/components/atoms/Button";
 import Link from "next/link";
-import React from "react";
+import React, { useRef } from "react";
 import { FaInstagram, FaFacebook, FaTwitter, FaWhatsapp } from "react-icons/fa";
 
 const Footer = () => {
+  const ref = useRef(null);
   return (
     <>
-      <footer className="flex justify-between lg:px-10 py-5 px-5 lg:p-4 bg-slate-700 text-white">
+      <footer
+        ref={ref}
+        className="flex justify-between lg:px-10 py-5 px-5 lg:p-4 bg-slate-700 text-white"
+      >
         <div className="flex flex-col gap-2">
           <div className="lg:flex">
             <Button className="">Bergabung dengan kami</Button>

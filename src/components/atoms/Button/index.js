@@ -5,9 +5,10 @@ const Button = ({
   type = "button",
   onClick = () => {},
   className = "bg-slate-800 text-white px-2 rounded-lg ",
+  ref,
 }) => {
   return (
-    <button type={type} className={` ${className}`} onClick={onClick}>
+    <button ref={ref} type={type} className={` ${className}`} onClick={onClick}>
       {children}
     </button>
   );

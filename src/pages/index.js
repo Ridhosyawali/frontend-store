@@ -34,7 +34,7 @@ export default function Home({ data }) {
 
   useEffect(() => {
     function handleScroll() {
-      const footerTop = ref.current.offsetTop;
+      const footerTop = ref.current?.offsetTop ?? 0;
       const viewportHeight = window.innerHeight;
       const scrollPosition = window.scrollY;
 
@@ -50,7 +50,7 @@ export default function Home({ data }) {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [ref]);
+  }, []);
 
   function handleBackToTop() {
     window.scrollTo({
@@ -139,10 +139,7 @@ export default function Home({ data }) {
 
       {/* Galeri */}
       <Section className={"bg-white"}>
-        <div
-          className="flex lg:flex-row lg:py-5 w-full px-2 items-center"
-          ref={ref}
-        >
+        <div className="flex lg:flex-row lg:py-5 w-full px-2 items-center">
           <div className="lg:w-[30%] flex flex-col p-4 gap-5">
             <span className="lg:text-2xl font-semibold">
               Let{"'"}s see our gallery
@@ -154,7 +151,7 @@ export default function Home({ data }) {
               All Products
             </Button>
           </div>
-          <div className="lg:w-[70%] p-4 mx-auto">
+          <div className="lg:w-[70%] p-4 mx-auto" ref={ref}>
             <CardCoverflow>
               {sliceProduct1.map((item) => (
                 <SwiperSlide key={item.id}>
