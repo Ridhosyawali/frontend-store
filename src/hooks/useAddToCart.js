@@ -1,7 +1,9 @@
+import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
 const useAddToCart = () => {
   const [cart, setCart] = useState([]);
+  const router = useRouter();
 
   const addToCart = (product) => {
     const token = localStorage.getItem("token");
@@ -22,6 +24,8 @@ const useAddToCart = () => {
       }
       setCart(updatedCart);
       localStorage.setItem("cart", JSON.stringify(updatedCart));
+    } else {
+      router.push("/login");
     }
   };
 
