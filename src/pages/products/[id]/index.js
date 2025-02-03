@@ -83,7 +83,9 @@ const ProductDetailPage = ({ detailProduct, data }) => {
                         <span className="font-bold text-md line-clamp-1">
                           {datas.title}
                         </span>
-                        <span className="font-semibold">Rp. {datas.price}</span>
+                        <span className="font-semibold">
+                          {formatCurrency(datas.price, "en-US", "USD")}
+                        </span>
                       </div>
                       <div className="flex flex-col justify-center items-center">
                         <span className="mb-1">Qty</span>
