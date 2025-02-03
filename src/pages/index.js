@@ -1,114 +1,199 @@
+import ElectricIcon from "@/components/atoms/Icons/electric";
+import GameIcon from "@/components/atoms/Icons/gaming";
+import LightIcon from "@/components/atoms/Icons/light";
+import MenuIcon from "@/components/atoms/Icons/menu";
+import MoneyIcon from "@/components/atoms/Icons/money";
+import PhoneIcon from "@/components/atoms/Icons/phone";
+import PlaneIcon from "@/components/atoms/Icons/plane";
+import WaterIcon from "@/components/atoms/Icons/water";
+import Section from "@/components/atoms/Section";
+import Banner from "@/components/molecules/BannerSlide";
+import { CardCoverflow } from "@/components/molecules/CardCoverflow";
+import CardProduct from "@/components/molecules/CardSale";
+import CardSlide from "@/components/molecules/CardSlide";
+import { BannerUrl } from "@/constant/BannerUrl";
+import { getProducts } from "@/services/products";
 import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
+import { useEffect, useRef, useState } from "react";
+import { SwiperSlide } from "swiper/react";
+import { GoMoveToTop } from "react-icons/go";
+import Link from "next/link";
+import Button from "@/components/atoms/Button";
+import { useRouter } from "next/compat/router";
+import FoodIcon from "@/components/atoms/Icons/food";
+export default function Home({ data }) {
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+  const banner = BannerUrl;
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+  const router = useRouter();
+  const ref = useRef();
 
-export default function Home() {
+  const sliceProduct = data.slice(0, 10);
+  const sliceProduct1 = data.slice(12, 18);
+
+  useEffect(() => {
+    function handleScroll() {
+      const footerTop = ref.current.offsetTop;
+      const viewportHeight = window.innerHeight;
+      const scrollPosition = window.scrollY;
+
+      if (scrollPosition + viewportHeight >= footerTop) {
+        setShowBackToTop(true);
+      } else {
+        setShowBackToTop(false);
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [ref]);
+
+  function handleBackToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
   return (
-    <div
-      className={`${geistSans.variable} ${geistMono.variable} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
-    >
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/pages/index.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <>
+      {/* Banner Icon */}
+      <Section className={"lg:px-10"}>
+        <div className="flex flex-col lg:py-5">
+          <div className="w-full">
+            <Banner preview={1}>
+              {banner.map((item) => (
+                <SwiperSlide key={item.id}>
+                  <Image
+                    src={item.url}
+                    alt="banner"
+                    className="w-full"
+                    width={1000}
+                    height={1000}
+                  />
+                </SwiperSlide>
+              ))}
+            </Banner>
+          </div>
+          <div className="py-5 px-5 w-full mx-auto grid grid-cols-4 lg:grid-cols-8 gap-5 items-top justify-items-center">
+            <PhoneIcon />
+            <MoneyIcon />
+            <LightIcon />
+            <GameIcon />
+            <WaterIcon />
+            <PlaneIcon />
+            <FoodIcon />
+            <MenuIcon />
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </Section>
+
+      {/* flash sale */}
+      <Section className={"bg-[#f4f4f4] lg:px-10 py-5 px-5"}>
+        <div className="flex flex-col lg:flex-row lg:py-5 w-full  px-2">
+          <div className="lg:w-[30%] flex flex-col p-4 gap-2">
+            <div className="flex flex-row items-center">
+              <div className="bg-white w-fit  rounded-full">
+                <ElectricIcon
+                  className={"text-[#ff8219] p-2 text-4xl lg:text-5xl"}
+                />
+              </div>
+              <span className="lg:text-2xl text-xl font-semibold ml-2">
+                Flash Sale
+              </span>
+            </div>
+            <p className="lg:text-xl font-[900] opacity-85">Ends in 02:20:00</p>
+          </div>
+          <div className="lg:w-[70%] w-full">
+            <div className="lg:flex hidden justify-end">
+              <Link
+                href={"/products"}
+                className="text-sm px-2 pb-1 hover:text-blue-500"
+              >
+                Lihat Semua +
+              </Link>
+            </div>
+            <CardSlide preview={3}>
+              {sliceProduct.map((item) => (
+                <SwiperSlide key={item.id}>
+                  <CardProduct>
+                    <CardProduct.Header
+                      image={item.image}
+                      link={`/products/${item.id}`}
+                    />
+                    <CardProduct.Body
+                      title={item.title}
+                      link={`/products/${item.id}`}
+                    />
+                    <CardProduct.Footer price={item.price} />
+                  </CardProduct>
+                </SwiperSlide>
+              ))}
+            </CardSlide>
+          </div>
+        </div>
+      </Section>
+
+      {/* Galeri */}
+      <Section className={"bg-white"}>
+        <div
+          className="flex lg:flex-row lg:py-5 w-full px-2 items-center"
+          ref={ref}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          <div className="lg:w-[30%] flex flex-col p-4 gap-5">
+            <span className="lg:text-2xl font-semibold">
+              Let{"'"}s see our gallery
+            </span>
+            <Button
+              onClick={() => router.push("/products")}
+              className="lg:text-lg text-sm bg-blue-600 w-fit px-5 py-2 text-white rounded-md"
+            >
+              All Products
+            </Button>
+          </div>
+          <div className="lg:w-[70%] p-4 mx-auto">
+            <CardCoverflow>
+              {sliceProduct1.map((item) => (
+                <SwiperSlide key={item.id}>
+                  <Image
+                    width={500}
+                    height={500}
+                    alt="product"
+                    src={item.image}
+                    className="aspect-square lg:h-[300px] object-contain "
+                  />
+                </SwiperSlide>
+              ))}
+            </CardCoverflow>
+          </div>
+        </div>
+      </Section>
+
+      {showBackToTop && (
+        <div
+          onClick={handleBackToTop}
+          className="fixed bottom-20 right-5 bg-gradient-hover p-2 rounded-full bg-slate-200 cursor-pointer"
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          <GoMoveToTop className="text-xl" />
+        </div>
+      )}
+    </>
   );
+}
+
+export async function getServerSideProps() {
+  try {
+    const products = await getProducts();
+
+    return {
+      props: {
+        data: products || [],
+      },
+    };
+  } catch (error) {
+    console.log("Failed to fetch products :", error);
+  }
 }
